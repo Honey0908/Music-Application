@@ -3,7 +3,7 @@ import { fetchUserProfile } from '../Services/user';
 
 export const fetchUserData = createAsyncThunk(
     'user/fetchUserData',
-    async (dispatch) => {
+    async (dispatch, thunkAPI) => {
         const user = await fetchUserProfile(dispatch);
         return user;
     }
