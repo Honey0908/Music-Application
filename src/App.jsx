@@ -12,6 +12,7 @@ export const audioElement = new Audio();
 const App = () => {
 
   const accessToken = useSelector((state) => state.auth.accessToken);
+  const error = useSelector(state => state.auth.error)
   const dispatch = useDispatch()
 
 
@@ -37,12 +38,20 @@ const App = () => {
 
   return (
     <React.Fragment>
-      {accessToken ? (
-        <Body />
-      ) : (
-        <Login />
-      )}
-    </React.Fragment>
+      {error &&
+        <div className='error-box'>
+          <h2 style={{ color: "red" }}>{error}</h2>
+          <p>Please Login Again Or Ask Developer to give you access</p>
+        </div>
+      }
+      {
+        (accessToken && !error) ? (
+          <Body />
+        ) : (
+          <Login />
+        )
+      }
+    </React.Fragment >
   );
 };
 

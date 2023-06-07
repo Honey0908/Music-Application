@@ -139,3 +139,14 @@ button {
   background-color: rgb(129, 129, 129);
   /* outline: 1px solid slategrey; */
 }
+
+.error-box {
+  width: max-content;
+  margin: 1em auto;
+  margin-bottom: 0;
+  padding: 2em;
+  border: 1px solid #ffc600;
+  background-color: rgba(255, 221, 99, 0.3);
+  border-radius: 15px;
+  text-align: center;
+}

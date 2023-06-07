@@ -4,13 +4,8 @@ import { fetchUserProfile } from '../Services/user';
 export const fetchUserData = createAsyncThunk(
     'user/fetchUserData',
     async (dispatch) => {
-        try {
-            const user = await fetchUserProfile(dispatch);
-            return user;
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            throw error;
-        }
+        const user = await fetchUserProfile(dispatch);
+        return user;
     }
 );
 
@@ -27,7 +22,7 @@ const authSlice = createSlice({
         setAccessToken: (state, action) => {
             state.accessToken = action.payload
         },
-        removeAccessToken: (state, action) => {
+        removeAccessToken: (state) => {
             state.accessToken = ""
         }
     },

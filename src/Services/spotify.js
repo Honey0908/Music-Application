@@ -19,7 +19,7 @@ const scopes = [
 ];
 const authEndpoint = 'https://accounts.spotify.com/authorize';
 
-export const SpotifyAuthnticationUrl = `${authEndpoint}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&response_type=token`;
+export const SpotifyAuthnticationUrl = `${authEndpoint}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&response_type=token&show_dialog=true`;
 
 
 
