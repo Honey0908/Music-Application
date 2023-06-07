@@ -38,7 +38,7 @@ const Playlist = () => {
     let playlistTrackIDQueue;
 
     if (data) {
-        playlistTrackIDQueue = data?.tracks?.items?.map(track => track.track.id)
+        playlistTrackIDQueue = data?.tracks?.items?.map(track => track?.track?.id)
         console.log(playlistTrackIDQueue);
     }
 
@@ -92,8 +92,8 @@ const Playlist = () => {
                         {
                             data?.tracks?.items?.map((track) => {
                                 return (
-                                    <React.Fragment key={track.track.id} >
-                                        <TrackList data={track.track} handleTrack={handleTrack} />
+                                    <React.Fragment key={track?.track?.id} >
+                                        <TrackList data={track?.track} handleTrack={handleTrack} />
                                     </React.Fragment>
                                 );
                             })
