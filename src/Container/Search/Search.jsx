@@ -17,7 +17,6 @@ const Search = () => {
 
 
         async function search() {
-            console.log("searchquery+" + searchQuery);
             if (searchQuery.trim() !== '') {
                 const searchData = await spotifyApi.search(searchQuery, [
                     'track',
@@ -25,7 +24,6 @@ const Search = () => {
                     'artist',
                     'playlist',
                 ], { limit: 10 });
-                console.log(searchData);
                 setdata(searchData);
                 return;
             }
@@ -41,7 +39,6 @@ const Search = () => {
         TrackIdsQueue = data?.tracks?.items?.map(track => track.id)
     }
     const handleTrack = (id) => {
-        console.log("handle track");
         dispatch(currentTrackActions.addTrackId(id));
         dispatch(currentTrackActions.addTrackQueue(TrackIdsQueue));
 

@@ -6,13 +6,14 @@ import Login from './Pages/Login/Login';
 import Body from './Pages/Body/Body';
 
 
-
+// create HTML audio element for music streaming
 export const audioElement = new Audio();
 
 const App = () => {
 
   const accessToken = useSelector((state) => state.auth.accessToken);
-  const error = useSelector(state => state.auth.error)
+  const error = useSelector(state => state.auth.error);
+
   const dispatch = useDispatch()
 
 
@@ -27,7 +28,6 @@ const App = () => {
 
     if (accessToken) {
       spotifyApi.setAccessToken(accessToken);
-      console.log(spotifyApi.getAccessToken());
       dispatch(fetchUserData());
     }
 

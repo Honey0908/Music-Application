@@ -13,7 +13,6 @@ const Category = () => {
         async function fetchData() {
             const data = await spotifyApi.getCategoryPlaylists(params.id)
             setdata(data)
-            console.log(data);
         }
         fetchData()
 

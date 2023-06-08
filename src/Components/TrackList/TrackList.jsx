@@ -1,5 +1,5 @@
 import { Avatar, Button } from '@mui/material'
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import styles from './TrackList.module.css'
 import { Favorite, FavoriteBorder } from '@mui/icons-material'
 import { formatDuration } from '../../Utils/Helper'
@@ -14,9 +14,12 @@ const TrackList = ({ data, handleTrack, image, searchTrack, params, fetchData })
 
     const favoriteTracksIDs = useSelector(state => state.favorites.favoriteTracksIDs)
 
-    const [isFavorite, setIsFavorite] = useState(() => {
-        return favoriteTracksIDs.includes(data.id)
-    });
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    useEffect(() => {
+        const isTrackFavorite = favoriteTracksIDs.includes(data.id);
+        setIsFavorite(isTrackFavorite);
+    }, [favoriteTracksIDs]);
 
 
     const handleAddToFavorite = (e) => {
@@ -32,12 +35,9 @@ const TrackList = ({ data, handleTrack, image, searchTrack, params, fetchData })
 
 
     const addTrackToPlaylist = async (e) => {
-        console.log("clicked");
         e.stopPropagation();
         if (params) {
-            console.log("fetched");
             await spotifyApi.addTracksToPlaylist(params.id, [data.uri]);
-            console.log(fetchData);
             fetchData();
 
         }

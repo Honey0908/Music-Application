@@ -19,7 +19,6 @@ const SearchResults = ({ fetchData }) => {
     }
 
     useEffect(() => {
-        console.log(searchTrack);
         if (searchTrack.trim() !== "") {
             async function getSearchTrack() {
                 const data = await spotifyApi.searchTracks(searchTrack, { limit: 10 });

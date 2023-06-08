@@ -27,8 +27,6 @@ const Playlist = () => {
     const fetchData = async () => {
         const playlistData = await spotifyApi.getPlaylist(params.id);
         setdata(playlistData);
-        console.log(playlistData);
-        console.log("fetched data again");
     };
 
     useEffect(() => {
@@ -39,11 +37,9 @@ const Playlist = () => {
 
     if (data) {
         playlistTrackIDQueue = data?.tracks?.items?.map(track => track?.track?.id)
-        console.log(playlistTrackIDQueue);
     }
 
     const handleTrack = (id) => {
-        console.log("clicked" + id);
         dispatch(currentTrackActions.addTrackQueue(playlistTrackIDQueue))
         dispatch(currentTrackActions.addTrackId(id));
         ref.current.scrollIntoView({ behavior: 'smooth' });

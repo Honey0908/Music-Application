@@ -16,8 +16,6 @@ import { spotifyApi } from "./spotify"
 export const getNewReleases = async () => {
     try {
         const response = await spotifyApi.getNewReleases();
-        console.log("---new releases----------------");
-        console.log(response);
         return response.albums;
 
     } catch (error) {
@@ -27,8 +25,6 @@ export const getNewReleases = async () => {
 export const getFeaturedPlaylists = async () => {
     try {
         const response = await spotifyApi.getFeaturedPlaylists();
-        console.log("--------get featured Playlistss----------------");
-        console.log(response);
         return response;
 
     } catch (error) {
@@ -38,8 +34,6 @@ export const getFeaturedPlaylists = async () => {
 export const getCategories = async () => {
     try {
         const response = await spotifyApi.getCategories();
-        console.log("------------Categories---------------");
-        console.log(response);
         return response.categories;
 
     } catch (error) {
@@ -49,8 +43,6 @@ export const getCategories = async () => {
 export const getCategoryPlaylists = async (id) => {
     try {
         const response = await spotifyApi.getCategoryPlaylists(id);
-        console.log("--------category Playlists----------------");
-        console.log(response);
 
     } catch (error) {
         console.error('Error occurred while fetching category playlist:', error);

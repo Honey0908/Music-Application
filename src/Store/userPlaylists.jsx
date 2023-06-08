@@ -8,7 +8,6 @@ export const fetchUserPlaylists = createAsyncThunk(
     'userPlaylists/fetchUserPlaylists',
     async (userId) => {
         const response = await getUserPlaylists(userId);
-        console.log(response);
         return response.items;
     }
 );
@@ -72,7 +71,6 @@ const userPlaylistsSlice = createSlice({
                 state.error = null;
             })
             .addCase(createUserPlaylist.fulfilled, (state, action) => {
-                console.log(state.playlists);
                 state.playlists.push(action.payload)
                 state.loading = false;
             })

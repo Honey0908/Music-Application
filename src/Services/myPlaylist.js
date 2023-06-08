@@ -22,7 +22,6 @@ export const CreateUserPlaylists = async ([userId, name, description]) => {
                 "description": description,
                 "public": false
             });
-            console.log(playlist);
             return playlist;
         }
 

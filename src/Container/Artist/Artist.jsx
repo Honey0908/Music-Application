@@ -19,9 +19,7 @@ const Artist = () => {
             const artist = await spotifyApi.getArtist(params.id);
             const artistTracks = await spotifyApi.getArtistTopTracks(params.id, "IN");
             setArtist(artist);
-            console.log(artist);
             setArtistTracks(artistTracks);
-            console.log(artistTracks);
         }
         fetchData()
     }, [])

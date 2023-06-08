@@ -7,7 +7,6 @@ const ScrollToTopButton = ({ scrollableRef }) => {
 
     const handleScroll = () => {
         const scrollTop = scrollableRef.current.scrollTop;
-        console.log(scrollTop > 200);
         setIsVisible(scrollTop > 200); // Show the button when scroll position is greater than 200p
     };
     useEffect(() => {

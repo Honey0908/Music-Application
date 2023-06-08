@@ -22,7 +22,6 @@ const Album = () => {
         async function fetchData() {
             const data = await spotifyApi.getAlbum(params.id)
             setdata(data)
-            console.log(data);
         }
         fetchData()
 

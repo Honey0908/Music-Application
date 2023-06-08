@@ -33,13 +33,16 @@ const Player = () => {
         async function fetchSong() {
             if (track) {
                 const trackData = await spotifyApi.getTrack(track);
-                if (trackData) {
+                if (trackData?.preview_url) {
                     audioElement.src = trackData?.preview_url;
                     audioElement.addEventListener('ended', handleSongEnded);
                     audioElement.play();
                     setTrackData(trackData);
                     setIsPlaying(true);
+                    return;
                 }
+                console.log(trackData?.preview_url);
+                await playNext()
             }
         }
         fetchSong();
@@ -56,7 +59,6 @@ const Player = () => {
     }, [favoriteTracksIDs, track]);
 
     const handleSongEnded = () => {
-        console.log('song ended event');
         audioElement.src = null;
         dispatch(currentTrackActions.setNextTrack());
     };
@@ -75,7 +77,7 @@ const Player = () => {
     };
 
     const playNext = async () => {
-        console.log('next');
+        console.log("played next");
         dispatch(currentTrackActions.setNextTrack());
     };
 

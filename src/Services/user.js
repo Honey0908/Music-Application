@@ -7,7 +7,6 @@ import { authActions } from "../Store/authSlice";
 export const fetchUserProfile = async (dispatch) => {
     try {
         if (spotifyApi.getAccessToken()) {
-            console.log("hello");
             const response = await spotifyApi.getMe();
             return { name: response?.display_name, email: response?.email, followers: response?.followers, image: response?.images, id: response.id };
         }
@@ -19,7 +18,8 @@ export const fetchUserProfile = async (dispatch) => {
         if (error.status === 403) {
             localStorage.removeItem("token");
             spotifyApi.setAccessToken("");
+            throw new Error(error.response);
         }
-        throw new Error(error.response);
+        throw new Error(error)
     }
 };

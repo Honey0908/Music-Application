@@ -25,7 +25,6 @@ export const addTrackToFavorite = createAsyncThunk(
     async (trackID) => {
         try {
             const response = await addTrackToFavorites(trackID);
-            console.log(response);
             return response;
 
         } catch (error) {
@@ -38,7 +37,6 @@ export const removeTrackFromFavourties = createAsyncThunk(
     async (trackID) => {
         try {
             const response = await removeFromFavourties(trackID);
-            console.log(response);
             return response;
         } catch (error) {
             throw Error(error.message);

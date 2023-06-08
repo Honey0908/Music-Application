@@ -19,7 +19,6 @@ const currentTrackSlice = createSlice({
         },
         setPrevTrack: (state) => {
             const currentIndex = state.TrackQueue.findIndex((trackId) => trackId === state.trackID);
-            console.log(currentIndex);
             if (currentIndex > 0) {
                 state.trackID = state.TrackQueue[currentIndex - 1];
             }
@@ -28,15 +27,11 @@ const currentTrackSlice = createSlice({
             }
         },
         setNextTrack: (state) => {
-            console.log("here");
             const currentIndex = state.TrackQueue.findIndex((trackId) => trackId === state.trackID);
-            console.log(currentIndex);
             if (currentIndex < state.TrackQueue.length - 1) {
-                console.log("inside");
                 state.trackID = state.TrackQueue[currentIndex + 1];
             }
             if (currentIndex >= state.TrackQueue.length - 1) {
-                console.log("inside 2");
                 state.trackID = state?.TrackQueue[0]
             }
         }
