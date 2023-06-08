@@ -41,7 +41,6 @@ const Player = () => {
                     setIsPlaying(true);
                     return;
                 }
-                console.log(trackData?.preview_url);
                 await playNext()
             }
         }
@@ -77,7 +76,6 @@ const Player = () => {
     };
 
     const playNext = async () => {
-        console.log("played next");
         dispatch(currentTrackActions.setNextTrack());
     };
 

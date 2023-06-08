@@ -1,39 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { audioElement } from '../../../../App';
-import styles from './ProgressBar.module.css'
 import { Slider } from '@mui/material';
 
 const ProgressBar = () => {
-    const [progress, setProgress] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
+
     useEffect(() => {
         const interval = setInterval(() => {
-
-            const currentTime = audioElement.currentTime;
-            const calculatedProgress = (currentTime / 30) * 100
-            //     clearInterval(interval);
-            setProgress(calculatedProgress)
-            // }
-        }, 100); // Update progress every second
+            setCurrentTime(audioElement.currentTime);
+        }, 100);
 
         return () => {
-            clearInterval(interval); // Clear the interval on component unmount
+            clearInterval(interval);
         };
     }, []);
 
     return (
-        // <div className={styles.progressBar}>
-        //     <progress value={progress} max={100}></progress>
-        // </div>
         <Slider
             aria-label="time-indicator"
             size="small"
-            value={audioElement.currentTime}
+            value={currentTime}
             min={0}
-            step={1}
+            step={0.1}
             max={30}
-            onChange={(_, value) => audioElement.currentTime = value}
+            onChange={(_, value) => (audioElement.currentTime = value)}
             sx={{
-                color: 'var(--primary-color)',
+                color: 'var(--text-color)',
                 height: 4,
                 padding: 0,
                 '& .MuiSlider-thumb': {
@@ -51,7 +43,7 @@ const ProgressBar = () => {
                 },
                 '& .MuiSlider-rail': {
                     opacity: 0.28,
-                }
+                },
             }}
         />
     );
