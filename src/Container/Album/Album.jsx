@@ -7,6 +7,7 @@ import { currentTrackActions } from '../../Store/CurrentTrackSlice';
 import styles from './Album.module.css'
 import TrackList from '../../Components/TrackList/TrackList';
 import { Grid } from '@mui/material';
+import { authActions } from '../../Store/authSlice';
 
 
 const Album = () => {
@@ -20,8 +21,14 @@ const Album = () => {
     useEffect(() => {
 
         async function fetchData() {
-            const data = await spotifyApi.getAlbum(params.id)
-            setdata(data)
+            try {
+                const data = await spotifyApi.getAlbum(params.id)
+                setdata(data)
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    dispatch(authActions.removeAccessToken());
+                }
+            }
         }
         fetchData()
 

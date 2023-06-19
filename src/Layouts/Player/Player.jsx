@@ -16,6 +16,8 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { currentTrackActions } from '../../Store/CurrentTrackSlice';
 import { addTrackToFavorite, removeTrackFromFavourties } from '../../Store/Favorites';
+import { ToastContainer, toast } from 'react-toastify';
+import { authActions } from '../../Store/authSlice';
 
 const Player = () => {
     const theme = useTheme();
@@ -32,16 +34,25 @@ const Player = () => {
     useEffect(() => {
         async function fetchSong() {
             if (track) {
-                const trackData = await spotifyApi.getTrack(track);
-                if (trackData?.preview_url) {
-                    audioElement.src = trackData?.preview_url;
-                    audioElement.addEventListener('ended', handleSongEnded);
-                    audioElement.play();
-                    setTrackData(trackData);
-                    setIsPlaying(true);
-                    return;
+                try {
+                    const trackData = await spotifyApi.getTrack(track);
+                    if (trackData?.preview_url) {
+                        audioElement.src = trackData?.preview_url;
+                        audioElement.addEventListener('ended', handleSongEnded);
+                        audioElement.play();
+                        setTrackData(trackData);
+                        setIsPlaying(true);
+                        return;
+                    }
+                    toast.error("Song preview is not available.");
+                    console.log("tosted");
+                    await playNext()
+
+                } catch (error) {
+                    if (error.response && error.response.status === 401) {
+                        dispatch(authActions.removeAccessToken());
+                    }
                 }
-                await playNext()
             }
         }
         fetchSong();
@@ -95,6 +106,7 @@ const Player = () => {
     return (
         trackData && (
             <Box className={`${styles.playerContainer} ${!track ? styles.hide : styles.show}`}>
+
                 <div className={styles.AvtarNameWrapper}>
                     <Avatar alt={trackData.name} variant="square" src={trackData?.album?.images[0]?.url} className={styles.PlayerImg} />
                     <div>

@@ -6,6 +6,7 @@ import { currentTrackActions } from '../../Store/CurrentTrackSlice';
 import { Grid } from '@mui/material';
 import styles from './Artist.module.css'
 import { useDispatch } from 'react-redux';
+import { authActions } from '../../Store/authSlice';
 
 const Artist = () => {
 
@@ -16,10 +17,18 @@ const Artist = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const artist = await spotifyApi.getArtist(params.id);
-            const artistTracks = await spotifyApi.getArtistTopTracks(params.id, "IN");
-            setArtist(artist);
-            setArtistTracks(artistTracks);
+            try {
+                const artist = await spotifyApi.getArtist(params.id);
+                const artistTracks = await spotifyApi.getArtistTopTracks(params.id, "IN");
+                setArtist(artist);
+                setArtistTracks(artistTracks);
+
+            }
+            catch (error) {
+                if (error.response && error.response.status === 401) {
+                    dispatch(authActions.removeAccessToken());
+                }
+            }
         }
         fetchData()
     }, [])

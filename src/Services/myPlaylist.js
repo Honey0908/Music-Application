@@ -26,7 +26,7 @@ export const CreateUserPlaylists = async ([userId, name, description]) => {
         }
 
     } catch (error) {
-        console.error('Error occurred while fetching playlists', error);
+        console.error('Error occurred while fetching playlists', error.status);
     }
 };
 

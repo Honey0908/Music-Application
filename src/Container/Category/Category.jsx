@@ -3,16 +3,26 @@ import { useParams } from 'react-router-dom';
 import { spotifyApi } from '../../Services/spotify';
 import '../../assets/Styles/common.css'
 import ShowData from '../../Components/showData/ShowData';
+import { authActions } from '../../Store/authSlice';
+import { useDispatch } from 'react-redux';
 const Category = () => {
     const params = useParams();
 
     const [data, setdata] = useState(null)
+    const dispatch = useDispatch()
 
     useEffect(() => {
 
         async function fetchData() {
-            const data = await spotifyApi.getCategoryPlaylists(params.id)
-            setdata(data)
+            try {
+                const data = await spotifyApi.getCategoryPlaylists(params.id)
+                setdata(data)
+            }
+            catch (error) {
+                if (error.response && error.response.status === 401) {
+                    dispatch(authActions.removeAccessToken());
+                }
+            }
         }
         fetchData()
 

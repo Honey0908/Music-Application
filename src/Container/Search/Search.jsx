@@ -8,31 +8,39 @@ import TrackList from '../../Components/TrackList/TrackList';
 import { Grid } from '@mui/material';
 import { currentTrackActions } from '../../Store/CurrentTrackSlice';
 import ShowData from '../../Components/showData/ShowData';
+import { authActions } from '../../Store/authSlice';
 const Search = () => {
     const searchQuery = useSelector((state) => state.search.searchQuery);
     const categories = useSelector((state) => state.browse.categories);
     const [data, setdata] = useState(null);
+    const dispatch = useDispatch()
 
     useEffect(() => {
 
-
         async function search() {
             if (searchQuery.trim() !== '') {
-                const searchData = await spotifyApi.search(searchQuery, [
-                    'track',
-                    'album',
-                    'artist',
-                    'playlist',
-                ], { limit: 10 });
-                setdata(searchData);
-                return;
+                try {
+
+                    const searchData = await spotifyApi.search(searchQuery, [
+                        'track',
+                        'album',
+                        'artist',
+                        'playlist',
+                    ], { limit: 10 });
+                    setdata(searchData);
+                    return;
+                }
+                catch (error) {
+                    if (error.response && error.response.status === 401) {
+                        dispatch(authActions.removeAccessToken());
+                    }
+                }
             }
             setdata(null);
         }
         search();
     }, [searchQuery]);
 
-    const dispatch = useDispatch()
 
     let TrackIdsQueue;
     if (data) {

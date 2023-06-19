@@ -21,7 +21,7 @@ const TrackList = ({ data, handleTrack, image, searchTrack, params, fetchData })
         setIsFavorite(isTrackFavorite);
     }, [favoriteTracksIDs]);
 
-
+    console.log(data);
     const handleAddToFavorite = (e) => {
         e.stopPropagation();
         if (isFavorite) {
@@ -44,6 +44,9 @@ const TrackList = ({ data, handleTrack, image, searchTrack, params, fetchData })
     }
 
     return (
+
+        data?.name &&
+
         <div className={styles.trackRowContainer} onClick={() => handleTrack(data.id)}>
             <div className='d-flex-row' style={{ flex: 2 }}>
 
@@ -81,6 +84,7 @@ const TrackList = ({ data, handleTrack, image, searchTrack, params, fetchData })
 
             </div>
         </div>
+
     )
 }
 

@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { authActions, fetchUserData } from './Store/authSlice';
 import Login from './Pages/Login/Login';
 import Body from './Pages/Body/Body';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // create HTML audio element for music streaming
 export const audioElement = new Audio();
@@ -44,6 +45,7 @@ const App = () => {
           <p>Please Login Again Or Ask Developer to give you access</p>
         </div>
       }
+      <ToastContainer />
       {
         (accessToken && !error) ? (
           <Body />

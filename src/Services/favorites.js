@@ -25,7 +25,7 @@ export const removeFromFavourties = async (trackID) => {
         await spotifyApi.removeFromMySavedTracks([trackID]);
         return trackID;
     } catch (error) {
-        throw Error(error.message);
+        throw Error(error.status);
     }
 
 }

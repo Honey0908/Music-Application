@@ -9,6 +9,7 @@ import styled from '@emotion/styled'
 import TrackList from '../../Components/TrackList/TrackList';
 import SearchTrack from './Components/SearchTrack/SearchTrack';
 import SearchResults from './Components/SearchResults/SearchResults';
+import { authActions } from '../../Store/authSlice';
 
 
 
@@ -25,8 +26,14 @@ const Playlist = () => {
     const [data, setdata] = useState(null)
 
     const fetchData = async () => {
-        const playlistData = await spotifyApi.getPlaylist(params.id);
-        setdata(playlistData);
+        try {
+            const playlistData = await spotifyApi.getPlaylist(params.id);
+            setdata(playlistData);
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                dispatch(authActions.removeAccessToken());
+            }
+        }
     };
 
     useEffect(() => {

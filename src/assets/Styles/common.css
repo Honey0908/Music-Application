@@ -76,6 +76,7 @@
 .loading-component {
   margin: auto;
   margin-top: 45vh;
+  margin-left: 45vw;
 }
 
 .MuiSlider-root {

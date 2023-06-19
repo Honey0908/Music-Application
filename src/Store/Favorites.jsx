@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { addTrackToFavorites, getUserFavoritesTrack, removeFromFavourties } from '../Services/favorites';
+import { authActions } from './authSlice';
 
 const initialState = {
     favoriteTracks: [],
@@ -11,12 +12,8 @@ const initialState = {
 export const fetchFavoriteTracks = createAsyncThunk(
     'favorites/fetchFavoriteTracks',
     async () => {
-        try {
-            const response = await getUserFavoritesTrack();
-            return response;
-        } catch (error) {
-            throw Error(error.message);
-        }
+        const response = await getUserFavoritesTrack();
+        return response;
     }
 );
 
@@ -75,8 +72,14 @@ const favoritesSlice = createSlice({
                 state.favoriteTracksIDs = state.favoriteTracks.map(track => track.id)
             })
             .addCase(fetchFavoriteTracks.rejected, (state, action) => {
+                console.log(action.error.message);
                 state.isLoading = false;
-                state.error = action.error.message;
+                if (action.error.message === 403) {
+                    state.error = action.error.message;
+                }
+                if (action.error.message === 401) {
+                    dispatch(authActions.removeAccessToken())
+                }
             });
     },
 });

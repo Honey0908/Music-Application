@@ -6,6 +6,7 @@ import { useState } from 'react';
 import TrackList from '../../../../Components/TrackList/TrackList';
 import { currentTrackActions } from '../../../../Store/CurrentTrackSlice';
 import { useParams } from 'react-router-dom';
+import { authActions } from '../../../../Store/authSlice';
 
 const SearchResults = ({ fetchData }) => {
     const params = useParams()
@@ -21,8 +22,16 @@ const SearchResults = ({ fetchData }) => {
     useEffect(() => {
         if (searchTrack.trim() !== "") {
             async function getSearchTrack() {
-                const data = await spotifyApi.searchTracks(searchTrack, { limit: 10 });
-                setSearchTracks(data);
+                try {
+
+                    const data = await spotifyApi.searchTracks(searchTrack, { limit: 10 });
+                    setSearchTracks(data);
+                }
+                catch (error) {
+                    if (error.response && error.response.status === 401) {
+                        dispatch(authActions.removeAccessToken());
+                    }
+                }
             }
             getSearchTrack();
         }
