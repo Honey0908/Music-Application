@@ -7,6 +7,7 @@ import { spotifyApi } from '../../Services/spotify'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTrackToFavorite, removeTrackFromFavourties } from '../../Store/Favorites'
+import { Link } from 'react-router-dom'
 
 const TrackList = ({ data, handleTrack, image, searchTrack, params, fetchData }) => {
 
@@ -42,6 +43,10 @@ const TrackList = ({ data, handleTrack, image, searchTrack, params, fetchData })
         }
     }
 
+    const handleArtistClick = (e) => {
+        e.stopPropagation();
+    };
+
     return (
 
         data?.name &&
@@ -59,7 +64,7 @@ const TrackList = ({ data, handleTrack, image, searchTrack, params, fetchData })
                         {data.artists.map((artist) => {
                             return (
                                 <Fragment key={artist.id}>
-                                    <span className={styles.artistName} >{artist.name} </span>
+                                    <Link className="artistNameLink" onClick={handleArtistClick} to={`/artist/${artist.id}`} >{artist.name} </Link>
                                 </Fragment>
                             )
                         })}

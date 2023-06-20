@@ -18,6 +18,7 @@ import { currentTrackActions } from '../../Store/CurrentTrackSlice';
 import { addTrackToFavorite, removeTrackFromFavourties } from '../../Store/Favorites';
 import { ToastContainer, toast } from 'react-toastify';
 import { authActions } from '../../Store/authSlice';
+import { Link } from 'react-router-dom';
 
 const Player = () => {
     const theme = useTheme();
@@ -115,7 +116,7 @@ const Player = () => {
                             {trackData.artists.map((artist) => {
                                 return (
                                     <Fragment key={artist.id}>
-                                        {artist.name + ' '}
+                                        <Link className='artistNameLink' to={`artist/${artist.id}`}> {artist.name + " "} </Link>
                                     </Fragment>
                                 );
                             })}

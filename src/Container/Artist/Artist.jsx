@@ -32,7 +32,7 @@ const Artist = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [params])
 
     let playlistTrackIDQueue;
     if (artistTracks) {

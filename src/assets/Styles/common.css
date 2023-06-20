@@ -51,6 +51,17 @@
   padding-top: 0.5em;
 }
 
+.artistNameLink {
+  color: var(--text-color2);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+.artistNameLink:hover {
+  color: var(--text-color);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
 @media screen and (max-width: 426px) {
   .verticalCardWrapper {
     justify-content: center;

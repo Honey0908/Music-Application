@@ -20,11 +20,6 @@
   padding: 0;
 }
 
-.artistName {
-  /* color: var(--text-color); */
-  font-size: small;
-}
-
 .TextWrapper {
   margin-inline: 1em;
   text-overflow: ellipsis;
