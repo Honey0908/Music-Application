@@ -9,8 +9,17 @@ export const fetchUserData = createAsyncThunk(
             const user = await fetchUserProfile();
             return user;
         } catch (error) {
-            const newAccessToken = await getNewAccessToken()
-            dispatch(authActions.setAccessToken(newAccessToken));
+            if (error.status == 401) {
+                const newAccessToken = await getNewAccessToken(dispatch)
+                if (newAccessToken) {
+                    console.log("here");
+                    dispatch(authActions.setAccessToken(newAccessToken));
+                }
+            }
+            if (error.status != 403) {
+                console.log("here");
+                dispatch(authActions.removeAccessToken())
+            }
             return rejectWithValue(error);
         }
     }
@@ -50,7 +59,8 @@ const authSlice = createSlice({
             })
             .addCase(fetchUserData.rejected, (state, action) => {
                 state.loading = false;
-                if (action.payload.status === 403) {
+                console.log(action);
+                if (action.payload.status == 403) {
                     state.error = action.payload.message;
                 }
             });

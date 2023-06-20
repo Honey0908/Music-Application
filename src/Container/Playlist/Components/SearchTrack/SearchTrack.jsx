@@ -13,10 +13,7 @@ const SearchTrack = () => {
     const dispatch = useDispatch()
 
 
-
-
     useEffect(() => {
-
         const handleSearchDebounced = debounce((query) => {
             dispatch(SearchActions.changeSearchQuery(query));
         }, 500);
@@ -25,7 +22,7 @@ const SearchTrack = () => {
         return () => {
             handleSearchDebounced.cancel();
         };
-    }, [searchText, dispatch]);
+    }, [searchText]);
 
 
     return (

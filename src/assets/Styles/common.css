@@ -86,8 +86,8 @@
 }
 .loading-component {
   margin: auto;
-  margin-top: 40vh;
-  margin-left: 40vw;
+  margin-top: 45vh;
+  text-align: center;
 }
 
 .MuiSlider-root {

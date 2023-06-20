@@ -1,4 +1,5 @@
 import SpotifyWebApi from 'spotify-web-api-js';
+import { authActions } from '../Store/authSlice';
 
 export const spotifyApi = new SpotifyWebApi();
 
@@ -56,13 +57,12 @@ export const exchangeCodeForTokens = async (code) => {
 export const getAccessToken = async () => {
     const params = new URLSearchParams(location.search);
     const code = params.get('code');
-
+    // add code to clear params
     if (code) {
         try {
             const { access_token, refresh_token } = await exchangeCodeForTokens(code);
-
-            // Store the access token and refresh token in your app's state or wherever you need it
             localStorage.setItem('refreshToken', refresh_token);
+            window.location.search = "";
             return access_token;
         } catch (error) {
             console.error('Error exchanging code for tokens:', error);
@@ -72,29 +72,32 @@ export const getAccessToken = async () => {
 
 
 export const getNewAccessToken = async () => {
+    const refresh_token = localStorage.getItem('refreshToken');
+    if (refresh_token) {
+        const response = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+            },
+            body: new URLSearchParams({
+                grant_type: 'refresh_token',
+                refresh_token: localStorage.getItem('refreshToken'),
+            }),
+        });
+        console.log(response);
 
-    const response = await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
-        },
-        body: new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: localStorage.getItem('refreshToken'),
-        }),
-    });
-    console.log(response);
+        if (!response.ok) {
+            throw new Error('Failed to refresh access token');
+        }
 
-    if (!response.ok) {
-        throw new Error('Failed to refresh access token');
+        const data = await response.json();
+        const { access_token } = data;
+
+        // Store the new access token and its expiration time in your app
+        // You can use it for subsequent API calls
+        // spotifyApi.setAccessToken(access_token);
+        return access_token;
     }
-
-    const data = await response.json();
-    const { access_token } = data;
-
-    // Store the new access token and its expiration time in your app
-    // You can use it for subsequent API calls
-    // spotifyApi.setAccessToken(access_token);
-    return access_token;
+    return null;
 };
