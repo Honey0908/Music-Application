@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { spotifyApi } from '../../Services/spotify';
+import { getNewAccessToken, spotifyApi } from '../../Services/spotify';
 import '../../assets/Styles/common.css'
 
 import Headings from '../../Components/Headings/Headings';
@@ -32,7 +32,8 @@ const Search = () => {
                 }
                 catch (error) {
                     if (error.response && error.response.status === 401) {
-                        dispatch(authActions.removeAccessToken());
+                        const newAccessToken = await getNewAccessToken();
+                        dispatch(authActions.setAccessToken(newAccessToken));
                     }
                 }
             }

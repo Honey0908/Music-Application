@@ -21,10 +21,14 @@ const App = () => {
   useEffect(() => {
 
     if (!accessToken) {
-      const token = getAccessToken();
-      if (token) {
-        dispatch(authActions.setAccessToken(token));
+      async function getToken() {
+        const token = await getAccessToken();
+        if (token) {
+          console.log(token);
+          dispatch(authActions.setAccessToken(token));
+        }
       }
+      getToken()
     }
 
     if (accessToken) {

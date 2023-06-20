@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchUserProfile } from '../Services/user';
-import { spotifyApi } from '../Services/spotify';
+import { getNewAccessToken, spotifyApi } from '../Services/spotify';
 
 export const fetchUserData = createAsyncThunk(
     'user/fetchUserData',
@@ -9,7 +9,8 @@ export const fetchUserData = createAsyncThunk(
             const user = await fetchUserProfile();
             return user;
         } catch (error) {
-            dispatch(authActions.removeAccessToken());
+            const newAccessToken = await getNewAccessToken()
+            dispatch(authActions.setAccessToken(newAccessToken));
             return rejectWithValue(error);
         }
     }

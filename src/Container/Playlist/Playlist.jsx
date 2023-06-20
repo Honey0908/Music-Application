@@ -1,6 +1,6 @@
 import React, { useDeferredValue, useEffect, useRef, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { spotifyApi } from '../../Services/spotify';
+import { getNewAccessToken, spotifyApi } from '../../Services/spotify';
 import '../../assets/Styles/common.css'
 import styles from './Playlist.module.css'
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,7 +31,8 @@ const Playlist = () => {
             setdata(playlistData);
         } catch (error) {
             if (error.response && error.response.status === 401) {
-                dispatch(authActions.removeAccessToken());
+                const newAccessToken = await getNewAccessToken();
+                dispatch(authActions.setAccessToken(newAccessToken));
             }
         }
     };

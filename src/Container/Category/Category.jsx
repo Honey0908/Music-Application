@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { spotifyApi } from '../../Services/spotify';
+import { getNewAccessToken, spotifyApi } from '../../Services/spotify';
 import '../../assets/Styles/common.css'
 import ShowData from '../../Components/showData/ShowData';
 import { authActions } from '../../Store/authSlice';
@@ -20,7 +20,8 @@ const Category = () => {
             }
             catch (error) {
                 if (error.response && error.response.status === 401) {
-                    dispatch(authActions.removeAccessToken());
+                    const newAccessToken = await getNewAccessToken();
+                    dispatch(authActions.setAccessToken(newAccessToken));
                 }
             }
         }

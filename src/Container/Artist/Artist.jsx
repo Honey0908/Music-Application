@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { spotifyApi } from '../../Services/spotify'
+import { getNewAccessToken, spotifyApi } from '../../Services/spotify'
 import TrackList from '../../Components/TrackList/TrackList';
 import { currentTrackActions } from '../../Store/CurrentTrackSlice';
 import { Grid } from '@mui/material';
@@ -26,7 +26,8 @@ const Artist = () => {
             }
             catch (error) {
                 if (error.response && error.response.status === 401) {
-                    dispatch(authActions.removeAccessToken());
+                    const newAccessToken = await getNewAccessToken();
+                    dispatch(authActions.setAccessToken(newAccessToken));
                 }
             }
         }

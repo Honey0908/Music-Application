@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
-import { spotifyApi } from '../../Services/spotify';
+import { getNewAccessToken, spotifyApi } from '../../Services/spotify';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
@@ -45,12 +45,12 @@ const Player = () => {
                         return;
                     }
                     toast.error("Song preview is not available.");
-                    console.log("tosted");
                     await playNext()
 
                 } catch (error) {
                     if (error.response && error.response.status === 401) {
-                        dispatch(authActions.removeAccessToken());
+                        const newAccessToken = await getNewAccessToken();
+                        dispatch(authActions.setAccessToken(newAccessToken));
                     }
                 }
             }

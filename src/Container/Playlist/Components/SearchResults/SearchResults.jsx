@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { spotifyApi } from '../../../../Services/spotify';
+import { getNewAccessToken, spotifyApi } from '../../../../Services/spotify';
 import { useState } from 'react';
 import TrackList from '../../../../Components/TrackList/TrackList';
 import { currentTrackActions } from '../../../../Store/CurrentTrackSlice';
@@ -29,7 +29,8 @@ const SearchResults = ({ fetchData }) => {
                 }
                 catch (error) {
                     if (error.response && error.response.status === 401) {
-                        dispatch(authActions.removeAccessToken());
+                        const newAccessToken = await getNewAccessToken();
+                        dispatch(authActions.setAccessToken(newAccessToken));
                     }
                 }
             }

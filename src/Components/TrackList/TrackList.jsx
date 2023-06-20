@@ -21,7 +21,6 @@ const TrackList = ({ data, handleTrack, image, searchTrack, params, fetchData })
         setIsFavorite(isTrackFavorite);
     }, [favoriteTracksIDs]);
 
-    console.log(data);
     const handleAddToFavorite = (e) => {
         e.stopPropagation();
         if (isFavorite) {
