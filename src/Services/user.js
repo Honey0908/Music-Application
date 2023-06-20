@@ -1,7 +1,6 @@
 
 
 import { spotifyApi } from "./spotify";
-import { authActions } from "../Store/authSlice";
 
 
 export const fetchUserProfile = async () => {
@@ -11,6 +10,7 @@ export const fetchUserProfile = async () => {
             return { name: response?.display_name, email: response?.email, followers: response?.followers, image: response?.images, id: response.id };
         }
     } catch (error) {
-        throw new Error(error.status)
+        const customError = { status: error.status, message: error.response };
+        throw customError;
     }
 };
