@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Acme&family=Inter:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&family=Pacifico&family=Poppins:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap");
+
 .playerContainer {
   position: absolute;
   bottom: 0;
@@ -10,13 +12,20 @@
   padding-inline: 1em;
   box-shadow: -1px 0px 3px 4px var(--secondary-color);
 }
-
-/* .hide {
-  display: none;
-}
-.show {
+.playerOptionalContainer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   display: flex;
-} */
+  align-items: center;
+  justify-content: flex-end;
+  padding-inline: 0.5em;
+  font-size: 3em;
+  background-color: var(--primary-color);
+  height: 9vh;
+  font-family: "Pacifico", cursive;
+  color: var(--brand-color);
+}
 
 .playerContainer div {
   align-items: center;
@@ -65,6 +74,9 @@
     padding-inline: 0px;
     height: 7vh;
     bottom: 56px;
+  }
+  .playerOptionalContainer {
+    display: none;
   }
   .progressBarDiv {
     display: none;

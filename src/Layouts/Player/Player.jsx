@@ -16,9 +16,12 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { currentTrackActions } from '../../Store/CurrentTrackSlice';
 import { addTrackToFavorite, removeTrackFromFavourties } from '../../Store/Favorites';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { authActions } from '../../Store/authSlice';
 import { Link } from 'react-router-dom';
+import musicImage1 from '../../assets/Images/musicVector1.png'
+import musicImage2 from '../../assets/Images/musicVector2.png'
+
 
 const Player = () => {
     const theme = useTheme();
@@ -105,8 +108,8 @@ const Player = () => {
     );
 
     return (
-        trackData && (
-            <Box className={`${styles.playerContainer} ${!track ? styles.hide : styles.show}`}>
+        trackData ? (
+            <Box className={styles.playerContainer}>
 
                 <div className={styles.AvtarNameWrapper}>
                     <Avatar alt={trackData.name} variant="square" src={trackData?.album?.images[0]?.url} className={styles.PlayerImg} />
@@ -165,6 +168,10 @@ const Player = () => {
                     )}
                 </div>
             </Box>
+        ) : (
+            <h1 className={styles.playerOptionalContainer}>
+                Bliss
+            </h1>
         )
     );
 };
