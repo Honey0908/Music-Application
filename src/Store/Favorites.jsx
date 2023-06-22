@@ -72,7 +72,6 @@ const favoritesSlice = createSlice({
                 state.favoriteTracksIDs = state.favoriteTracks.map(track => track.id)
             })
             .addCase(fetchFavoriteTracks.rejected, (state, action) => {
-                console.log(action.error.message);
                 state.isLoading = false;
                 if (action.error.message === 403) {
                     state.error = action.error.message;

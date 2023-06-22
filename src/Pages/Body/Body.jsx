@@ -11,12 +11,14 @@ import NavbarFooter from '../../Layouts/NavbarFooter/NavbarFooter';
 import { fetchFavoriteTracks } from '../../Store/Favorites';
 import { fetchUserPlaylists } from '../../Store/userPlaylists';
 import { DotLoader } from 'react-spinners';
+import { fetchUserData } from '../../Store/authSlice';
 
 
 
 const Body = () => {
     const dispatch = useDispatch()
     const loading = useSelector(state => state.auth.loading)
+    const accessToken = useSelector(state => state.auth.accessToken)
     const user = useSelector(state => state.auth.user)
 
     useEffect(() => {
@@ -25,6 +27,11 @@ const Body = () => {
             dispatch(fetchNewReleases())
             dispatch(fetchCategories())
             dispatch(fetchFavoriteTracks());
+        }
+    }, [user])
+
+    useEffect(() => {
+        if (user) {
             dispatch(fetchUserPlaylists(user?.id))
         }
     }, [user])
@@ -32,8 +39,9 @@ const Body = () => {
     const { theme } = useContext(ThemeContext);
 
     return (
-        loading ? <DotLoader className="loading-component" color='orange' /> :
 
+        loading ? (
+            <DotLoader className="loading-component" color='orange' />) :
             <Grid container direction="row" height="100vh" className={`container ${theme === 'dark' ? 'dark-theme' : 'light-theme'}`}>
                 <Hidden smDown>
                     <Grid item lg={2} md={3} sm={3.5} height="100vh">

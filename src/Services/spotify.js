@@ -38,7 +38,6 @@ export const exchangeCodeForTokens = async (code) => {
                 redirect_uri: redirectUri
             })
         });
-        console.log(response);
         if (!response.ok) {
             throw new Error('Failed to exchange authorization code for tokens');
         }
@@ -46,7 +45,6 @@ export const exchangeCodeForTokens = async (code) => {
         const data = await response.json();
         const { access_token, refresh_token } = data;
 
-        console.log(data);
         return { access_token, refresh_token };
     } catch (error) {
         console.error('Failed to exchange authorization code for tokens:', error);
@@ -57,16 +55,21 @@ export const exchangeCodeForTokens = async (code) => {
 export const getAccessToken = async () => {
     const params = new URLSearchParams(location.search);
     const code = params.get('code');
-    // add code to clear params
     if (code) {
         try {
             const { access_token, refresh_token } = await exchangeCodeForTokens(code);
             localStorage.setItem('refreshToken', refresh_token);
-            window.location.search = "";
+            // window.location.search = "";
             return access_token;
         } catch (error) {
             console.error('Error exchanging code for tokens:', error);
         }
+    }
+
+    const refresh_token = localStorage.getItem('refreshToken');
+    if (refresh_token) {
+        const newAccessToken = await getNewAccessToken();
+        return newAccessToken;
     }
 };
 
@@ -85,7 +88,6 @@ export const getNewAccessToken = async () => {
                 refresh_token: localStorage.getItem('refreshToken'),
             }),
         });
-        console.log(response);
 
         if (!response.ok) {
             throw new Error('Failed to refresh access token');

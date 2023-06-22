@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAccessToken, getNewAccessToken, spotifyApi } from './Services/spotify';
 import { useDispatch, useSelector } from 'react-redux';
-import { authActions, fetchUserData } from './Store/authSlice';
+import { authActions, fetchAccessToken, fetchUserData } from './Store/authSlice';
 import Login from './Pages/Login/Login';
 import Body from './Pages/Body/Body';
 import { ToastContainer } from 'react-toastify';
@@ -12,30 +12,24 @@ import { DotLoader } from 'react-spinners';
 export const audioElement = new Audio();
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const loading = useSelector((state) => state.auth.authLoading)
   const accessToken = useSelector((state) => state.auth.accessToken);
   const error = useSelector(state => state.auth.error);
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const initializeApp = async () => {
-      if (!accessToken) {
-        const token = await getAccessToken();
-        if (token) {
-          dispatch(authActions.setAccessToken(token));
-        }
-      }
+    if (!accessToken) {
+      dispatch(fetchAccessToken());
+    }
+  }, []);
 
-      if (accessToken) {
-        spotifyApi.setAccessToken(accessToken);
-        dispatch(fetchUserData());
-      }
-      setIsLoading(false);
-    };
-
-    initializeApp();
-  }, [accessToken, dispatch]);
+  useEffect(() => {
+    if (accessToken) {
+      spotifyApi.setAccessToken(accessToken);
+      dispatch(fetchUserData());
+    }
+  }, []);
 
   return (
     <React.Fragment>
@@ -46,10 +40,10 @@ const App = () => {
         </div>
       )}
       <ToastContainer />
-      {isLoading ? (
+      {(loading) ? (
         <DotLoader className="loading-component" color='orange' />
       ) : (
-        accessToken ? <Body /> : <Login />
+        (accessToken && !error) ? <Body /> : <Login />
       )}
     </React.Fragment>
   );

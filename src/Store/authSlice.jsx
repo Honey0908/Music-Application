@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchUserProfile } from '../Services/user';
-import { getNewAccessToken, spotifyApi } from '../Services/spotify';
+import { getAccessToken, getNewAccessToken, spotifyApi } from '../Services/spotify';
 
 export const fetchUserData = createAsyncThunk(
     'user/fetchUserData',
@@ -12,18 +12,29 @@ export const fetchUserData = createAsyncThunk(
             if (error.status == 401) {
                 const newAccessToken = await getNewAccessToken(dispatch)
                 if (newAccessToken) {
-                    console.log("here");
                     dispatch(authActions.setAccessToken(newAccessToken));
                 }
             }
-            if (error.status != 403) {
-                console.log("here");
-                dispatch(authActions.removeAccessToken())
-            }
+            dispatch(authActions.removeAccessToken());
             return rejectWithValue(error);
         }
     }
 );
+
+
+export const fetchAccessToken = createAsyncThunk(
+    'user/fetchAccessToken',
+    async (_, { dispatch, rejectWithValue }) => {
+
+        const token = await getAccessToken();
+        if (token) {
+            dispatch(authActions.setAccessToken(token));
+            dispatch(fetchUserData())
+        }
+
+    }
+);
+
 
 
 const authSlice = createSlice({
@@ -32,16 +43,19 @@ const authSlice = createSlice({
         accessToken: localStorage.getItem('token') || null,
         user: null,
         loading: false,
+        authLoading: false,
         error: null,
     },
     reducers: {
         setAccessToken: (state, action) => {
-            localStorage.setItem('token', action.payload);
-            spotifyApi.setAccessToken(action.payload);
             state.accessToken = action.payload
+            localStorage.setItem('token', action.payload);
+            localStorage.setItem("isloggedIn", true);
+            spotifyApi.setAccessToken(action.payload);
         },
         removeAccessToken: (state) => {
             localStorage.removeItem("token");
+            localStorage.setItem("isloggedIn", false);
             spotifyApi.setAccessToken("");
             state.accessToken = ""
         }
@@ -55,14 +69,26 @@ const authSlice = createSlice({
             .addCase(fetchUserData.fulfilled, (state, action) => {
                 state.error = null;
                 state.user = action.payload;
+                localStorage.setItem("user", action.payload.name)
                 state.loading = false;
             })
             .addCase(fetchUserData.rejected, (state, action) => {
                 state.loading = false;
-                console.log(action);
                 if (action.payload.status == 403) {
                     state.error = action.payload.message;
                 }
+            })
+            .addCase(fetchAccessToken.pending, (state) => {
+                state.authLoading = true;
+                state.error = null;
+            })
+            .addCase(fetchAccessToken.fulfilled, (state) => {
+                state.error = null;
+                state.authLoading = false;
+            })
+            .addCase(fetchAccessToken.rejected, (state, action) => {
+                state.authLoading = false;
+                state.error = "Something Wrong !"
             });
     },
 });
